@@ -4,6 +4,11 @@ import terser from '@rollup/plugin-terser';
 
 // 用于 UMD 格式的临时全局变量名，避免命名冲突
 const TEMP_GLOBAL_NAME = '__YCL_GLOBAL_EXPORTS__';
+// Banner 内容
+const bannerText = `/*!
+ * YCL public function Library by @YCL with MIT License
+ * Built: ${new Date().toISOString().slice(0, 10)}
+ */`;
 
 export default {
     input: 'src/index.js',
@@ -19,6 +24,9 @@ export default {
 
         // 确保导出所有 API
         exports: 'named',
+
+        // 添加Banner
+        banner: bannerText,
 
         // 通过 footer 注入全局挂载代码
         footer: `
@@ -45,14 +53,11 @@ export default {
 
     plugins: [
         terser({
-            // 压缩配置
             compress: {
-                // 启用尽可能的优化
-                passes: 2
+                passes: 2 // 压缩
             },
-            // 保留授权和重要的 JSDoc 注释
             format: {
-                comments: false,
+                comments: /^\!/, // 保持Banner
             }
         })
     ]
