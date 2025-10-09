@@ -31,20 +31,14 @@ export default {
         // 通过 footer 注入全局挂载代码
         footer: `
             (function () {
-                // 确保在浏览器环境
                 if (typeof window === 'undefined') return;
-
-                // 获取 Rollup 临时挂载的导出对象
                 var exports = window['${TEMP_GLOBAL_NAME}'];
-                
                 if (exports) {
-                    // 遍历导出的所有属性，直接挂载到 window
                     for (var key in exports) {
                         if (exports.hasOwnProperty(key)) {
                             window[key] = exports[key];
                         }
                     }
-                    // 清理临时命名空间，保持 window 干净
                     delete window['${TEMP_GLOBAL_NAME}'];
                 }
             })();
