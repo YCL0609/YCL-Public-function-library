@@ -7,7 +7,6 @@
  * @returns {Promise<void>} 返回一个Promise对象，成功时 resolve(void)
  */
 export function loadExternalResource(url, type, isModule = false, callback) {
-    // 保留对 document 的检查，以排除 Web Worker 等环境
     if (typeof document === 'undefined' || !document.head) {
         const envError = new Error('loadExternalResource: Must be executed in a DOM environment.');
         if (typeof callback === 'function') callback(envError);

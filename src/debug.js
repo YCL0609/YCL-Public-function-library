@@ -19,9 +19,7 @@ export class DbgTimmer {
      */
     setEnable(status = false) {
         this.#isEnabled = status;
-        if (!this.#isEnabled) {
-            this.#timings.clear();
-        }
+        if (!this.#isEnabled) this.#timings.clear();
     }
     /**
      * 开始一个名为 name 的计时。
@@ -31,7 +29,6 @@ export class DbgTimmer {
      */
     Start(name = 'noname') {
         if (!this.#isEnabled) return;
-        // 浏览器专用：直接使用 performance.now()
         this.#timings.set(name, performance.now());
     }
     /**
