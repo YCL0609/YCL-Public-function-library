@@ -3,13 +3,11 @@
  * @param {string} url 资源路径
  * @param {string} type 资源类型 ('js' 或 'css')
  * @param {boolean} [isModule=false] js资源是否为module (设置 <script type="module">)
- * @param {function} [callback] 可选的回调函数，加载完成后调用；如出现错误则传入 Error 参数
- * @returns {Promise<void>} 返回一个Promise对象，成功时 resolve(void)
+ * @returns {Promise<void>} 返回一个Promise对象
  */
-export function loadExternalResource(url, type, isModule = false, callback) {
+export function loadExternalResource(url, type, isModule = false) {
     if (typeof document === 'undefined' || !document.head) {
-        const envError = new Error('loadExternalResource: Must be executed in a DOM environment.');
-        if (typeof callback === 'function') callback(envError);
+        const envError = new Error('loadExternalResource: Must be executed in DOM environment.');
         return Promise.reject(envError);
     }
 
@@ -25,18 +23,13 @@ export function loadExternalResource(url, type, isModule = false, callback) {
             tag.src = url;
             tag.async = true;
         } else {
-            const error = new Error(`loadExternalResource: Invalid type "${type}". Must be 'js' or 'css'.`);
-            if (typeof callback === 'function') callback(error);
+            const error = new Error(`loadExternalResource: Invalid type "${type}".`);
             return reject(error);
         }
-        tag.onload = () => {
-            resolve();
-            if (typeof callback === 'function') callback();
-        };
+        tag.onload = () => resolve();
         tag.onerror = () => {
-            const loadError = new Error(`Failed to load resource: ${url} (Type: ${type})`);
+            const loadError = new Error(`Failed to load resource: ${url}`);
             reject(loadError);
-            if (typeof callback === 'function') callback(loadError);
         };
         document.head.appendChild(tag);
     });

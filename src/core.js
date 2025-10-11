@@ -26,7 +26,7 @@ export function isMobile() {
 /**
  * 网页URL参数获取
  * @param {string} [name] 不传返回所有值，传入则返回对应值
- * @returns {string|object|undefined} 参数值或所有参数对象。如果URL中没有参数，返回空对象或undefined。
+ * @returns {string|object|undefined} 参数值或所有参数对象。如果URL中没有参数，返回空对象或ulndefined。
  */
 export function getUrlParams(name) {
     const urlSearch = window.location.search;

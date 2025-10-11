@@ -45,7 +45,7 @@ export class DbgTimmer {
         const now = performance.now();
         const time = now - startTime;
         if (typeof console !== 'undefined') {
-            console.log(`${text || name}: %c${time.toFixed(3)}ms`, 'color: #6495ed');
+            console.log(`${text || name}: %c${time}ms`, 'color: #6495ed');
         }
         this.#timings.delete(name);
         return time;
