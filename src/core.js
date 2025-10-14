@@ -26,25 +26,22 @@ export function isMobile() {
 /**
  * 网页URL参数获取
  * @param {string} [name] 不传返回所有值，传入则返回对应值
- * @returns {string|object|undefined} 参数值或所有参数对象。如果URL中没有参数，返回空对象或ulndefined。
+ * @returns {string|object|undefined} 参数值或所有参数对象，若URL中没有参数返回空对象，当给定参数不存在返回 undefined。
  */
 export function getUrlParams(name) {
     const urlSearch = window.location.search;
-    if (!urlSearch || urlSearch === '?') {
-        if (urlSearch && urlSearch.indexOf('?') === 0 && urlSearch.length === 1) {
-            return false;
-        }
-    }
     const params = new URLSearchParams(urlSearch);
     if (!name) {
+        // 不传 name：返回所有参数的键值对对象
         const allParams = {};
         for (const [key, value] of params.entries()) {
             allParams[key] = value;
         }
         return allParams;
     } else {
+        // 传入 name：返回特定参数的值
         const value = params.get(name);
-        return value === null ? undefined : value;
+        return value === null ? undefined : value; // 参数不存在时返回 undefined
     }
 }
 
