@@ -1,6 +1,6 @@
-# YCL Public Function Library
+# YCL Public Library
 
-一个轻量的 JavaScript 公共函数库，包含常用工具函数，使用 Rollup 打包。
+一个 JavaScript 公共函数库，包含常用工具函数，使用 Rollup 打包。
 
 ## 项目概述
 
