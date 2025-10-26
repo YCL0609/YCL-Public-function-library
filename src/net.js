@@ -2,35 +2,33 @@
  * 异步加载资源函数
  * @param {string} url 资源路径
  * @param {string} type 资源类型 ('js' 或 'css')
- * @param {boolean} [isModule=false] js资源是否为module (设置 <script type="module">)
+ * @param {boolean} [isModule=false] js资源是否为ES module
+ * @param {boolean} [isasync=false] js资源是否为异步加载
  * @returns {Promise<void>} 返回一个Promise对象
  */
-export function loadExternalResource(url, type, isModule = false) {
+export function loadExternalResource(url, type, isModule = false, isasync = false) {
     if (typeof document === 'undefined' || !document.head) {
-        const envError = new Error('loadExternalResource: Must be executed in DOM environment.');
-        return Promise.reject(envError);
+        return Promise.reject(new Error('loadExternalResource: Must be executed in DOM environment.'));
     }
-
     return new Promise((resolve, reject) => {
         let tag;
-        if (type === "css") {
-            tag = document.createElement("link");
-            tag.rel = "stylesheet";
-            tag.href = url;
-        } else if (type === "js") {
-            tag = document.createElement("script");
-            if (isModule) tag.type = "module";
-            tag.src = url;
-            tag.async = true;
-        } else {
-            const error = new Error(`loadExternalResource: Invalid type "${type}".`);
-            return reject(error);
+        switch (type) {
+            case 'css':
+                tag = document.createElement('link');
+                tag.rel = 'stylesheet';
+                tag.href = url;
+                break;
+            case 'js':
+                tag = document.createElement('script');
+                tag.src = url;
+                tag.async = isasync;
+                if (isModule) tag.type = 'module';
+                break;
+            default:
+                return reject(new Error(`loadExternalResource: Invalid type "${type}".`));
         }
-        tag.onload = () => resolve();
-        tag.onerror = () => {
-            const loadError = new Error(`Failed to load resource: ${url}`);
-            reject(loadError);
-        };
+        tag.onload = resolve;
+        tag.onerror = () => reject(new Error(`Failed to load resource: ${url}`));
         document.head.appendChild(tag);
     });
 }
