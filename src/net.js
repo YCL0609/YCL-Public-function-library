@@ -34,8 +34,7 @@ export function loadExternalResource(url, type, isModule = false, isasync = fals
 }
 
 /**
- * 选择最快的服务器
- *
+ * 测试并选择最快的服务器
  * @param {string[]} TestURLs 需要测试的服务器 URL 数组
  * @param {boolean} [isDebug=false] 调试模式：输出详细结果到控制台。
  * @returns {Promise<object[]>} 一个对象数组，包含每个服务器的 URL、耗时、是否出错、出错信息、是否最快等信息。
